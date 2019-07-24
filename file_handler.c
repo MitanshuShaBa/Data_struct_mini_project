@@ -9,28 +9,24 @@ struct inv
 	int quantity;
 	int cost;
 	char expiry[20];
-	// char limit[20];
+	int limit;
 	char feedback[20];
 	char category[20];
 };
 
-void data_writer(struct inv a);
+void data_writer(struct inv a[]);
 void data_reader();
 void add_element();
 
 void main()
 {
-	// struct inv obj;
-	// obj.price = 20;
-	// obj.quantity = 50;
-	// printf("%d %d\n", obj.price, obj.quantity);
-	add_element();
+	// add_element();
 	// data_writer();
-	// data_reader();
+	data_reader();
 	getch();
 }
 
-void data_writer(struct inv a)
+void data_writer(struct inv a[])
 {
 	FILE *fp;
 	fp = fopen("test.txt", "w");
@@ -39,7 +35,10 @@ void data_writer(struct inv a)
 	else
 	{
 		printf("File is now open.\n");
-		fprintf(fp, "%s %d %d %d\n", a.name, a.price, a.quantity, a.cost);
+		for (int i = 0; i < 2; ++i)
+		{
+			fprintf(fp, "%s %d %d %d\n", a[i].name, a[i].price, a[i].quantity, a[i].cost);
+		}
 		printf("Written to file\n");
 	}
 	fclose(fp);
@@ -47,41 +46,45 @@ void data_writer(struct inv a)
 void data_reader()
 {
 	FILE *fp;
-	int a;
+	struct inv a[2];
 	fp = fopen("test.txt", "r");
 		if(fp==NULL)
 			printf("File failed to open\n");
 		else
 		{
 			printf("File is now open.\n");
-			fscanf(fp, "%d", &a);
+			for (int i = 0; i < 2; ++i)
+			{
+				fscanf(fp, "%s %d %d %d", a[i].name, &a[i].price, &a[i].quantity, &a[i].cost);
+			}
 			printf("Read from file\n");
-			printf("%d\n", a);
+			for (int i = 0; i < 2; ++i)
+			{
+				printf("%s %d %d %d\n", a[i].name, a[i].price, a[i].quantity, a[i].cost);
+			}
 		}
 	fclose(fp);
 }
 void add_element()
 {
-	// char name[20];
-	// int price;
-	// int quantity;
-	// int cost;
-	// char expiry[20];
-	// // char limit[20];
-	// char feedback[20];
-	// char category[20];
-	struct inv ap;
+	struct inv ap[2];
 
-	printf("Enter name of item\n");
-	gets(ap.name);
-	printf("Enter price\n");
-	scanf("%d", &ap.price);
-	printf("Enter quantity\n");
-	scanf("%d", &ap.quantity);
+	for (int i = 0; i < 2; ++i)
+	{
+		printf("Enter name of item\n");
+		scanf("%s", ap[i].name);
+		printf("Enter price\n");
+		scanf("%d", &ap[i].price);
+		printf("Enter quantity\n");
+		scanf("%d", &ap[i].quantity);
 
-	ap.cost = ap.price * ap.quantity;
+		ap[i].cost = ap[i].price * ap[i].quantity;
+	}
 
-	printf("%s %d %d %d\n", ap.name, ap.price, ap.quantity, ap.cost);
+	for (int i = 0; i < 2; ++i)
+	{
+		printf("%s %d %d %d\n", ap[i].name, ap[i].price, ap[i].quantity, ap[i].cost);
+	}
 
 	data_writer(ap);
 }
