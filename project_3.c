@@ -103,7 +103,6 @@ void data_reader()// to read data from inveratry
  	if (fp==NULL)
  	{
  		printf("file failed to open\n");
- 		exit(0);
  	}
  	else
  	{
