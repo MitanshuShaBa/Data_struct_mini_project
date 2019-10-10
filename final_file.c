@@ -53,8 +53,8 @@ void main()
 			printList();
 			break;
 			case 3:
-			// sort();
-			swap_data(start, end);
+			sort();
+			// swap_data(start, end);
 			break;
 			case 4:
 			temp_ptr = search_name();
@@ -73,7 +73,7 @@ void main()
 		}
 	 } while (choice!=6);
 	data_writer();
-	getch();  //  needed to be removed in case of ubunto system
+	getch();  //  needed to be removed in case of ubuntu system
 }
 
 void data_writer()//to write all data to inventary
@@ -204,25 +204,26 @@ void sort()
 
 void swap_data(struct node *ptr1,struct node *ptr2)
 {
+	struct node *preptr,*postptr;
 
-	struct node *temp=(struct node *)malloc(sizeof(struct node *));
-	temp->cost=ptr1->cost;
-	ptr1->cost=ptr2->cost;
-	ptr2->cost=temp->cost;
+	preptr = ptr1->prev;
+	postptr = ptr2->next;
 
-	// temp->price=ptr1->price;
-	// ptr1->price=ptr2->price;
-	// ptr2->price=temp->price;
+	if(preptr!=NULL)
+		preptr->next = ptr2;
+	else
+		start=ptr2;
+	ptr2->next = ptr1;
+	ptr1->next = postptr;
 
-	temp->quantity=ptr1->quantity;
-	ptr1->quantity=ptr2->quantity;
-	ptr2->quantity=temp->quantity;
-
-	strcpy(temp->name, ptr1->name);
-	strcpy(ptr1->name, ptr2->name);
-	strcpy(ptr2->name, temp->name);
-
-	free(temp);
+	if (postptr!=NULL)
+	{
+		postptr->prev = ptr1;
+	}
+	else
+		end=ptr1;
+	ptr1->prev=ptr2;
+	ptr2->prev=preptr;
 }
 
 void sort_cost()
@@ -264,6 +265,10 @@ void sort_name()
 			if(strcmp(ptr->name, key->name)>0)
 			{
 				swap_data(ptr, key);
+				// temp=ptr;
+				// ptr=key;
+				// key=temp;
+
 			}
 			ptr = ptr->next;
 			key = key->next;
