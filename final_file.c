@@ -37,6 +37,7 @@ void main()
 	do
 	 {
 	 	printf("\n1:add new element \n");
+	
 		printf("2:print the list\n");
 		printf("3:sort the list\n");
 		printf("4:search by element's name\n");
@@ -54,7 +55,6 @@ void main()
 			break;
 			case 3:
 			sort();
-			// swap_data(start, end);
 			break;
 			case 4:
 			temp_ptr = search_name();
@@ -167,9 +167,9 @@ void printList() // to print entire list
 	while (ptr!= NULL) 
 	{ 
 		printf("\t\t\t\t%s %d %d %d\n",ptr->name,ptr->price,ptr->quantity,ptr->cost);
-		ptr= ptr->next; 
+		ptr= ptr->next;
 	}
-} 
+}
 
 int counter()// needed in data writer function
 {
@@ -204,26 +204,28 @@ void sort()
 
 void swap_data(struct node *ptr1,struct node *ptr2)
 {
-	struct node *preptr,*postptr;
 
-	preptr = ptr1->prev;
-	postptr = ptr2->next;
+	// struct node *temp=(struct node *)malloc(sizeof(struct node *));
+	int temp;
+	char temp_name[20];
 
-	if(preptr!=NULL)
-		preptr->next = ptr2;
-	else
-		start=ptr2;
-	ptr2->next = ptr1;
-	ptr1->next = postptr;
+	temp=ptr1->cost;
+	ptr1->cost=ptr2->cost;
+	ptr2->cost=temp;
 
-	if (postptr!=NULL)
-	{
-		postptr->prev = ptr1;
-	}
-	else
-		end=ptr1;
-	ptr1->prev=ptr2;
-	ptr2->prev=preptr;
+	temp=ptr1->price;
+	ptr1->price=ptr2->price;
+	ptr2->price=temp;
+
+	temp=ptr1->quantity;
+	ptr1->quantity=ptr2->quantity;
+	ptr2->quantity=temp;
+
+	strcpy(temp_name, ptr1->name);
+	strcpy(ptr1->name, ptr2->name);
+	strcpy(ptr2->name, temp_name);
+
+	// free(temp);
 }
 
 void sort_cost()
@@ -265,10 +267,6 @@ void sort_name()
 			if(strcmp(ptr->name, key->name)>0)
 			{
 				swap_data(ptr, key);
-				// temp=ptr;
-				// ptr=key;
-				// key=temp;
-
 			}
 			ptr = ptr->next;
 			key = key->next;
